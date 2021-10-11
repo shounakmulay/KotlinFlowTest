@@ -27,11 +27,9 @@ class MainViewModelTest {
     }
 
     @Test
-    fun `Given launchASuspendFunction is called, When no error occurs, Then repositorySuspendingFunction should be invoked successfully`() = runBlocking {
-        mainViewModel.launchASuspendFunction()
+    fun `Given suspendingFunction is called, When no error occurs, Then repositorySuspendingFunction should be invoked successfully`() = runBlocking {
+        mainViewModel.suspendingFunction()
 
         verify(mainRepository, times(1)).repositorySuspendingFunction()
     }
-
-
 }

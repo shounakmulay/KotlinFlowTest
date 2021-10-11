@@ -13,4 +13,8 @@ class MainViewModel(
         mainRepository.repositorySuspendingFunction()
     }
 
+    suspend fun suspendingFunction() {
+        mainRepository.repositorySuspendingFunction()
+    }
+
 }

@@ -1,9 +1,6 @@
 package com.example.kotlinflowtest.viewmodel
 
 import com.example.kotlinflowtest.repository.MainRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

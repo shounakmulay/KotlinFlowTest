@@ -1,8 +1,10 @@
 package com.example.kotlinflowtest.viewmodel
 
 import com.example.kotlinflowtest.CoroutineDispatcherProvider
+import com.example.kotlinflowtest.SharingStrategyProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
@@ -13,7 +15,8 @@ import org.junit.runner.Description
 @ExperimentalCoroutinesApi
 class CoroutineScopeRule(
     private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher(),
-    var dispatcherProvider: CoroutineDispatcherProvider = CoroutineDispatcherProvider()
+    var dispatcherProvider: CoroutineDispatcherProvider = CoroutineDispatcherProvider(),
+    var sharingStrategyProvider: SharingStrategyProvider = SharingStrategyProvider()
 ): TestWatcher(), TestCoroutineScope by TestCoroutineScope(dispatcher) {
 
     override fun starting(description: Description?) {
@@ -23,6 +26,11 @@ class CoroutineScopeRule(
             main = dispatcher,
             default = dispatcher,
             io = dispatcher
+        )
+        sharingStrategyProvider = SharingStrategyProvider(
+            lazily = SharingStarted.Lazily,
+            eagerly = SharingStarted.Lazily,
+            whileSubscribed = SharingStarted.Lazily
         )
     }
 

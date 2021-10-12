@@ -1,5 +1,6 @@
 package com.example.kotlinflowtest.viewmodel
 
+import app.cash.turbine.test
 import com.example.kotlinflowtest.repository.MainRepository
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
@@ -9,8 +10,10 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.times
 import org.mockito.kotlin.*
+import kotlin.time.ExperimentalTime
 
 
+@ExperimentalTime
 class MainViewModelTest : BaseTest() {
 
     private lateinit var mainViewModel: MainViewModel
@@ -20,7 +23,11 @@ class MainViewModelTest : BaseTest() {
     fun setUp() {
         mainRepository = mock()
         whenever(mainRepository.count3Flow()).doReturn(getCount3Flow())
-        mainViewModel = MainViewModel(mainRepository, coroutineScope.dispatcherProvider)
+        mainViewModel = MainViewModel(
+            mainRepository,
+            coroutineScope.dispatcherProvider,
+            coroutineScope.sharingStrategyProvider
+        )
     }
 
     @Test
@@ -43,9 +50,43 @@ class MainViewModelTest : BaseTest() {
     fun `Given no error occurs, When count3Flow is called, Then it should emit all values correctly`() =
         runBlocking {
 
-            val countFlow = mainViewModel.countFlow
+            val countFlow = mainViewModel.countWithDoubleFlow
 
-            assertEquals(listOf(1, 2, 3), countFlow.toList())
+            assertEquals(listOf(1 to 2, 2 to 4, 3 to 6), countFlow.toList())
+        }
+
+    @Test
+    fun `When getStateFlow is called, it should emit values correctly`() = runBlocking {
+        val stateFlow = mainViewModel.getStateFlow()
+
+        stateFlow.test {
+            val firstItem = awaitItem()
+            assertEquals(10, firstItem)
+
+            stateFlow.emit(20)
+            val secondItem = awaitItem()
+            assertEquals(20, secondItem)
+
+            stateFlow.emit(20)
+            expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `When countWithDoubleSharedFlow is called, it should emit values correctly`() =
+        runBlocking {
+            val sharedFlow = mainViewModel.doubleCountSharedFlow
+
+            sharedFlow.test {
+                val firstItem = awaitItem()
+                assertEquals(2, firstItem)
+
+                val secondItem = awaitItem()
+                assertEquals(4, secondItem)
+
+                val thirdItem = awaitItem()
+                assertEquals(6, thirdItem)
+            }
         }
 
     private fun getCount3Flow() = flow {

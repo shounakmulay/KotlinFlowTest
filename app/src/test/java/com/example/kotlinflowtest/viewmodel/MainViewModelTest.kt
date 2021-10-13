@@ -8,7 +8,7 @@ import org.mockito.Mockito.times
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
-class MainViewModelTest: BaseTest() {
+class MainViewModelTest {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var mainRepository: MainRepository
@@ -16,7 +16,7 @@ class MainViewModelTest: BaseTest() {
     @Before
     fun setUp() {
         mainRepository = mock()
-        mainViewModel = MainViewModel(mainRepository, coroutineScope.dispatcherProvider)
+        mainViewModel = MainViewModel(mainRepository)
     }
 
     @Test
@@ -24,12 +24,5 @@ class MainViewModelTest: BaseTest() {
         mainViewModel.suspendingFunction()
 
         verify(mainRepository, times(1)).repositorySuspendingFunction()
-    }
-
-    @Test
-    fun `Given launchASuspendFunction is called, When no error occurs, Then repositorySuspendingFunction should be invoked successfully`() = runBlocking {
-        mainViewModel.launchASuspendFunction()
-
-        verify(mainRepository, times(2)).repositorySuspendingFunction()
     }
 }

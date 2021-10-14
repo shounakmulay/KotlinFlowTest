@@ -5,6 +5,7 @@ import com.example.kotlinflowtest.repository.MainRepository
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -48,7 +49,7 @@ class MainViewModelTest : BaseTest() {
 
     @Test
     fun `Given no error occurs, When count3Flow is called, Then it should emit all values correctly`() =
-        runBlocking {
+        coroutineScope.dispatcher.runBlockingTest {
 
             val countFlow = mainViewModel.countWithDoubleFlow
 
@@ -74,7 +75,7 @@ class MainViewModelTest : BaseTest() {
 
     @Test
     fun `When countWithDoubleSharedFlow is called, it should emit values correctly`() =
-        runBlocking {
+        coroutineScope.dispatcher.runBlockingTest {
             val sharedFlow = mainViewModel.doubleCountSharedFlow
 
             sharedFlow.test {

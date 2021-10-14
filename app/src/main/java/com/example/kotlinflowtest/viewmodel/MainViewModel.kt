@@ -23,20 +23,20 @@ class MainViewModel(
 
 
     val doubleCountFlow = countFlow.map {
+        delay(200)
         it * 2
     }.flowOn(dispatcherProvider.io)
 
-    val countWithDoubleFlow = countFlow.combine(doubleCountFlow) { count, double ->
+    val countWithDoubleFlow = countFlow.zip(doubleCountFlow) { count, double ->
         count to double
-    }
+    }.flowOn(dispatcherProvider.default)
 
     val doubleCountSharedFlow =
         doubleCountFlow.shareIn(viewModelScope, sharingStrategyProvider.eagerly)
 
-    suspend fun getStateFlow(): MutableStateFlow<Int> {
+    fun getStateFlow(): MutableStateFlow<Int> {
         return MutableStateFlow(10)
     }
-
 
     fun launchASuspendFunction() = viewModelScope.launch(dispatcherProvider.main) {
         mainRepository.repositorySuspendingFunction()

@@ -4,4 +4,4 @@ This is a companion repository for the article series `Testing Coroutines and Ko
 
 Check out the articles here
 - Part 1: https://blog.shounakmulay.dev/part-1-testing-coroutines-and-kotlin-flows
-- Part 2: Coming soon. 
+- Part 2: https://blog.shounakmulay.dev/part-2-testing-coroutines-and-kotlin-flows

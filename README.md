@@ -7,4 +7,5 @@ Check out the articles here
   - https://www.wednesday.is/writing-tutorials/testing-coroutines-and-kotlin-flows-part-1
   - https://blog.shounakmulay.dev/part-1-testing-coroutines-and-kotlin-flows
 - Part 2
+  - https://www.wednesday.is/writing-tutorials/say-goodbye-to-flakiness-testing-coroutines-and-kotlin-flows-part-2
   -  https://blog.shounakmulay.dev/part-2-testing-coroutines-and-kotlin-flows
